@@ -64,3 +64,6 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+1. some proper oracle use 
+2. write more tests
+3. smart contract audit preparation 
