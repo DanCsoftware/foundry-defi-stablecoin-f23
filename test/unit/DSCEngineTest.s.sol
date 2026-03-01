@@ -8,7 +8,7 @@ import {DeployDsc} from "../../script/DeployDSC.s.sol";
 import {DecentralizedStableCoin} from "../../src/DecentralizedStableCoin.sol";
 import {DSCEngine} from "../../src/DSCEngine.sol";
 import {HelperConfig} from "../../script/HelperConfig.s.sol";
-import {ERC20Mock} from "@openzeppelin/contracts/mocks/ERC20Mock.sol";
+import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 import {MockV3Aggregator} from "@chainlink/contracts/src/v0.8/tests/MockV3Aggregator.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
@@ -56,7 +56,8 @@ contract DSCEngineTest is Test {
 
     function testRevertsIfWrongToken() public {
         // create an instance of ERC20 that is not allowed
-        ERC20Mock wrongToken = new ERC20Mock("WrongToken", "WRONG", USER, AMOUNT_COLLATERAL);
+        ERC20Mock wrongToken = new ERC20Mock();
+        wrongToken.mint(USER, AMOUNT_COLLATERAL);
         vm.startPrank(USER);
         wrongToken.approve(address(dsce), AMOUNT_COLLATERAL);
         vm.expectRevert(DSCEngine.DSCEngine__NotAllowedToken.selector);
@@ -148,7 +149,8 @@ contract DSCEngineTest is Test {
     }
 
     function testRevertsWithUnapprovedCollateral() public {
-        ERC20Mock ranToken = new ERC20Mock("RAN", "RAN", USER, AMOUNT_COLLATERAL);
+        ERC20Mock ranToken = new ERC20Mock();
+        ranToken.mint(USER, AMOUNT_COLLATERAL);        
         vm.startPrank(USER);
         vm.expectRevert(DSCEngine.DSCEngine__NotAllowedToken.selector);
         dsce.depositCollateral(address(ranToken), AMOUNT_COLLATERAL);
