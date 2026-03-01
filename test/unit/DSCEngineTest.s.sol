@@ -205,7 +205,7 @@ contract DSCEngineTest is Test {
     //     ERC20Mock(weth).approve(address(dsce), AMOUNT_COLLATERAL);
 
     //     uint256 expectedHealthFactor =
-    //     dsce._healthFactor(amountToMint, dsce.getUsdValue(weth, AMOUNT_COLLATERAL));
+    //     dsce.getHealthFactor(amountToMint, dsce.getUsdValue(weth, AMOUNT_COLLATERAL));
     //     vm.expectRevert(abi.encodeWithSelector(DSCEngine.DSCEngine__BreaksHealthFactor.selector, expectedHealthFactor));
     //     dsce.depositCollateralAndMintDsc(weth, AMOUNT_COLLATERAL, amountToMint);
     //     vm.stopPrank();
@@ -282,7 +282,7 @@ contract DSCEngineTest is Test {
         ERC20Mock(weth).approve(address(dsce), AMOUNT_COLLATERAL);
         dsce.depositCollateral(weth, AMOUNT_COLLATERAL);
         uint256 expectedHealthBeforeDeposit = type(uint256).max;
-        assertEq(expectedHealthBeforeDeposit, dsce._healthFactor(USER));
+        assertEq(expectedHealthBeforeDeposit, dsce.getHealthFactor(USER));        
         vm.stopPrank();
     }
 
@@ -293,7 +293,7 @@ contract DSCEngineTest is Test {
         uint256 collateralValueInUsd = dsce.getUsdValue(weth, AMOUNT_COLLATERAL);
         uint256 collateralAdjustedForThreshold = (collateralValueInUsd * LIQUIDATION_THRESHOLD) / LIQUIDATION_PRECISION;
         uint256 expectedHealthFactor = (collateralAdjustedForThreshold * PRECISION) / AMOUNT_MINTED;
-        uint256 actualHealthFactor = dsce._healthFactor(USER);
+        uint256 actualHealthFactor = dsce.getHealthFactor(USER);
         assertEq(expectedHealthFactor, actualHealthFactor);
         vm.stopPrank();
     }
