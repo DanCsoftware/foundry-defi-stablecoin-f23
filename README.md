@@ -116,7 +116,7 @@ function invariant_protocolMustHaveMoreValueThanTotalSupply() public view {
 
 The commented-out `updateCollateralPrice` function in `Handler.sol` is intentional — enabling it causes the invariant to break, which correctly demonstrates the known limitation: if collateral crashes faster than liquidators can act, the system can become insolvent.
 
-![Stablecoin Test Suite Passing](./images/stable-testing.png)
+![Stablecoin Test Suite Passing](./image/stable_test.png)
 ---
 
 ## Prerequisites
